@@ -3,9 +3,6 @@
  *
  * [68] Text Justification
  */
-#include <string>
-#include <vector>
-using namespace std;
 class Solution
 {
 public:
@@ -27,7 +24,7 @@ public:
 				if (spaceNum > 0)
 				{
 					int tmpNum;
-					if (j == wordsNum)  // 最后一行
+					if (j == wordsNum)
 					{
 						tmpNum = j - k == 1 ? spaceNum : 1;
 					}
