@@ -3,8 +3,6 @@
  *
  * [43] Multiply Strings
  */
-#include <string>
-using namespace std;
 class Solution
 {
 public:

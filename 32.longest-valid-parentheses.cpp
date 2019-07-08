@@ -3,8 +3,6 @@
  *
  * [32] Longest Valid Parentheses
  */
-#include <vector>
-using namespace std;
 class Solution
 {
 public:
@@ -20,14 +18,14 @@ public:
 			{
 				if (s[i - 1] == '(')
 				{
-					dp[i] = (i >= 2) ? dp[i - 2] + 2 : 2;
+					dp[i]   = (i >= 2) ? dp[i - 2] + 2 : 2;
 					max_len = max_len > dp[i] ? max_len : dp[i];
 				}
 				else
 				{
 					if ((i - 1 - dp[i - 1]) >= 0 && s[i - 1 - dp[i - 1]] == '(')
 					{
-						dp[i] = dp[i - 1] + 2 + ((i - 1 - dp[i - 1] >= 2) ? dp[i - 2 - dp[i - 1]] : 0);
+						dp[i]   = dp[i - 1] + 2 + ((i - 1 - dp[i - 1] >= 2) ? dp[i - 2 - dp[i - 1]] : 0);
 						max_len = max_len > dp[i] ? max_len : dp[i];
 					}
 				}

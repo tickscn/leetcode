@@ -3,10 +3,6 @@
  *
  * [71] Simplify Path
  */
-#include <string>
-#include <vector>
-
-using namespace std;
 class Solution
 {
 public:

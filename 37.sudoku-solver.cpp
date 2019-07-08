@@ -3,9 +3,6 @@
  *
  * [37] Sudoku Solver
  */
-#include <cstring>
-#include <vector>
-using namespace std;
 class Solution
 {
 public:
@@ -29,7 +26,7 @@ public:
 	bool isValidSudoku(vector<vector<char>>& board)
 	{
 		char map[10] = {0};
-		int size = 9;
+		int size     = 9;
 		for (int i = 0; i < size; ++i)
 		{
 			for (int j = 0; j < size; ++j)

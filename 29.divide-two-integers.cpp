@@ -3,8 +3,6 @@
  *
  * [29] Divide Two Integers
  */
-#include <climits>
-#include <cmath>
 class Solution
 {
 public:
@@ -15,19 +13,19 @@ public:
 			return INT_MAX;
 		}
 		if (divisor == 1 && dividend == INT_MIN) return INT_MIN;
-		int res = 0;
+		int res   = 0;
 		bool sign = true;
 		if (dividend < 0 && divisor > 0 || dividend > 0 && divisor < 0)
 		{
 			sign = false;
 		}
 		unsigned int undividend = dividend;
-		unsigned int undivisor = divisor;
+		unsigned int undivisor  = divisor;
 		if (undividend > INT_MAX) undividend = ~undividend + 1;
 		if (undivisor > INT_MAX) undivisor = ~undivisor + 1;
 		while (undividend >= undivisor)
 		{
-			int n = 1;
+			int n              = 1;
 			unsigned int unTmp = undivisor;
 			while (undividend >= unTmp)
 			{
