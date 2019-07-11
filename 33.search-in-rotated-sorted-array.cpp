@@ -10,24 +10,21 @@ public:
 	{
 		int size = nums.size();
 		if (size == 0) return -1;
-		vector<int> index(size);
+		int index;
 		int i = 0;
 		while (i < size - 1)
 		{
 			if (nums[i + 1] < nums[i]) break;
 			++i;
 		}
-		for (int j = 0; j < size; ++j)
-		{
-			index[j] = (j + size + i + 1) % size;
-		}
+		index    = i + 1;
 		int left = 0, right = size - 1;
 		while (left <= right)
 		{
 			int mid = left + (right - left) / 2;
-			if (nums[index[mid]] == target)
-				return index[mid];
-			else if (nums[index[mid]] > target)
+			if (nums[(mid + size + index) % size] == target)
+				return (mid + size + index) % size;
+			else if (nums[(mid + size + index) % size] > target)
 				right = mid - 1;
 			else
 				left = mid + 1;
