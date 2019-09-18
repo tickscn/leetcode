@@ -22,19 +22,46 @@
  */
 class Solution
 {
-public:
-	TreeNode* sortedListToBST(ListNode* head, ListNode* tail = nullptr)
+private:
+	ListNode* root;
+	TreeNode* inorderListToBST(int l, int r)
 	{
-		if (head == tail) return nullptr;
-		ListNode *slow = head, *fast = head->next;
-		while (fast != tail && fast->next != tail)
+		if (l > r) return nullptr;
+		int mid = (l + r) / 2;
+
+		TreeNode* left = inorderListToBST(l, mid - 1);
+		TreeNode* node = new TreeNode(root->val);
+
+		node->left  = left;
+		root        = root->next;
+		node->right = inorderListToBST(mid + 1, r);
+		return node;
+	}
+
+public:
+	//	TreeNode* sortedListToBST(ListNode* head, ListNode* tail = nullptr)
+	//	{
+	//		if (head == tail) return nullptr;
+	//		ListNode *slow = head, *fast = head->next;
+	//		while (fast != tail && fast->next != tail)
+	//		{
+	//			slow = slow->next;
+	//			fast = fast->next->next;
+	//		}
+	//		TreeNode* root = new TreeNode(slow->val);
+	//		root->left     = sortedListToBST(head, slow);
+	//		root->right    = sortedListToBST(slow->next, tail);
+	//		return root;
+	//	}
+	TreeNode* sortedListToBST(ListNode* head)
+	{
+		root       = head;
+		int length = 0;
+		while (head)
 		{
-			slow = slow->next;
-			fast = fast->next->next;
+			++length;
+			head = head->next;
 		}
-		TreeNode* root = new TreeNode(slow->val);
-		root->left     = sortedListToBST(head, slow);
-		root->right    = sortedListToBST(slow->next, tail);
-		return root;
+		return inorderListToBST(0, length - 1);
 	}
 };
