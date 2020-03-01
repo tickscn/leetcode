@@ -5,27 +5,21 @@
  */
 
 // @lc code=start
-int helper(int* prices, int pricesSize)
+#include <limits.h>
+int sellProfit(int* prices, int pricesSize)
 {
-    if (pricesSize <= 1) return 0;
-    int max = 0;
-    int min = prices[0];
-    for (int i = 1; i < pricesSize; ++i)
+    int sell1 = 0;
+    int buy1  = INT_MAX;
+    int sell2 = 0;
+    int buy2  = INT_MAX;
+    for (int i = 0; i < pricesSize; i++)
     {
-        min = prices[i] < min ? prices[i] : min;
-        max = prices[i] - min > max ? prices[i] - min : max;
+        sell1 = prices[i] - buy1 > buy1 ? prices[i] - buy1 : sell1;
+        buy1  = prices[i] < buy1 ? prices[i] : buy1;
+        sell2 = prices[i] - buy2 > sell2 ? prices[i] - buy2 : sell2;
+        buy2  = prices[i] - sell1 < buy2 ? prices[i] - sell1 : buy2;
     }
-    return max;
-}
-int maxProfit(int* prices, int pricesSize)
-{
-    int ret = 0;
-    for (int i = 0; i < pricesSize - 1; i++)
-    {
-        int a = helper(prices, i + 1) + helper(prices + i, pricesSize - i);
-        if (a > ret) ret = a;
-    }
-    return ret;
+    return sell2;
 }
 
 // @lc code=end
