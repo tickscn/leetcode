@@ -62,71 +62,51 @@
 #include <bits/stdc++.h>
 using namespace std;
 class Solution {
-public:
-    bool canTrans(string& from, string& to)
+    void dfs(unordered_map<string, unordered_set<string>>& preLevel, const string& end, vector<string> path,
+             vector<vector<string>>& res)
     {
-        int count = 0;
-        for (size_t i = 0; i < from.size(); ++i)
+        path.emplace_back(end);
+        if (preLevel.count(end) == 0)
         {
-            if (from[i] == to[i]) ++count;
+            res.emplace_back(make_move_iterator(path.rbegin()), make_move_iterator(path.rend()));
+            return;
         }
-        return count == from.size() - 1;
+        for (const string& word : preLevel[end]) dfs(preLevel, word, path, res);
     }
 
+public:
     vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList)
     {
-        if (wordList.size() == 0) return {};
-        int endIndex, beginIndex;
-        size_t size = wordList.size();
-        for (endIndex = 0; endIndex < size; ++endIndex)
+        unordered_set<string> wSet(wordList.begin(), wordList.end());
+        if (wSet.find(endWord) == wSet.end()) return {};
+        unordered_map<string, unordered_set<string>> preLevel;
+        unordered_set<string> q = {beginWord}, curLevel;
+        for (; q.size() && preLevel.count(endWord) == 0; q = curLevel)
         {
-            if (wordList[endIndex] == endWord) break;
-        }
-        if (endIndex == size) return {};
-        for (beginIndex = 0; beginIndex < size; ++beginIndex)
-        {
-            if (wordList[beginIndex] == beginWord) break;
-        }
-        if (beginIndex == size) wordList.push_back(beginWord);
-        vector<vector<string>> res;
-        vector<string> path;
-        queue<int> Q;
-        vector<int> depth(size + 1, INT_MAX);    // 路径权重
-        vector<vector<int>> neighbor(size + 1);  // 邻接表法构建图
-        depth[beginIndex] = 0;
-        Q.push(beginIndex);
-        while (!Q.empty())
-        {
-            int temp = Q.front();
-            Q.pop();
-            for (int i = 0; i < size; ++i)
+            for (const string& word : q) wSet.erase(word);
+            curLevel.clear();
+            for (const string& word : q)
             {
-                if (depth[i] > depth[temp] && canTrans(wordList[temp], wordList[i]))
+                for (int i = 0; i < word.length(); ++i)
                 {
-                    neighbor[temp].push_back(i);
-                    if (depth[i] == INT_MAX) Q.push(i);
-                    depth[i] = depth[temp] + 1;
+                    string cur = word;
+                    for (char ch = 'a'; ch <= 'z'; ++ch)
+                    {
+                        if (word[i] == ch) continue;
+                        cur[i] = ch;
+                        if (wSet.find(cur) != wSet.end())
+                        {
+                            preLevel[cur].insert(word);
+                            curLevel.insert(cur);
+                        }
+                    }
                 }
             }
         }
-        dfs(wordList, beginIndex, endIndex, path, neighbor, res);
-        return res;
-    }
-    void dfs(vector<string>& wordList, int curr, int endIndex, vector<string> path, vector<vector<int>>& neighbor,
-             vector<vector<string>>& res)
-    {
-        path.push_back(wordList[curr]);
-        if (endIndex == curr)
-        {
-            //到达了迭代终点
-            res.push_back(path);
-            return;
-        }
-        for (int wordIndex : neighbor[curr])
-        {
-            //对于邻接节点
-            dfs(wordList, wordIndex, endIndex, path, neighbor, res);
-        }
+        if (preLevel.size() == 0) return {};
+        vector<vector<string>> result;
+        dfs(preLevel, endWord, {}, result);
+        return result;
     }
 };
 // @lc code=end
