@@ -42,34 +42,42 @@ class Solution {
 public:
     ListNode* sortList(ListNode* head)
     {
-        if (!head || !head->next) return head;
-        dummy->next = head;
-        sortList(dummy, nullptr);
-        return dummy->next;
+        return head ? mergeSort(head) : head;
     }
-    void sortList(ListNode* beg, ListNode* end)
+    ListNode* mergeSort(ListNode* head)
     {
-        if (beg->next == end) return;
-        ListNode* flag = beg->next;
-        bool f         = true;
-        while (flag->next != end)
+        if (!head->next) return head;
+        ListNode *slow = head, *fast = head, *pre;
+        while (fast && fast->next)
         {
-            ListNode* pt = flag->next;
-            if (pt->val < flag->val)
+            pre  = slow;
+            fast = fast->next->next;
+            slow = slow->next;
+        }
+        pre->next = nullptr;
+        return merge(mergeSort(head), mergeSort(slow));
+    }
+    ListNode* merge(ListNode* l, ListNode* r)
+    {
+        if (!l) return r;
+        if (!r) return l;
+        ListNode* last = dummy;
+        while (l && r)
+        {
+            if (l->val <= r->val)
             {
-                f          = false;
-                flag->next = pt->next;
-                pt->next   = beg->next;
-                beg->next  = pt;
+                last->next = l;
+                l          = l->next;
             }
             else
             {
-                flag = pt;
+                last->next = r;
+                r          = r->next;
             }
+            last = last->next;
         }
-        if (f) return;
-        sortList(beg, flag);
-        sortList(flag, end);
+        last->next = l ? l : r;
+        return dummy->next;
     }
 };
 // @lc code=end
