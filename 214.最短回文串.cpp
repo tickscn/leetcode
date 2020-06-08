@@ -34,35 +34,37 @@
 using namespace std;
 class Solution {
 public:
-    string shortestPalindrome(string s)
-    {
-        int length = s.length();
-        if (length < 2) return s;
-        vector<vector<bool>> dp(length, vector<bool>(length, false));
-        int maxL = 1;
-        for (int i = 0; i < length; ++i) dp[i][0] = true;
-        for (int l = 1; l < length; ++l)
+    string shortestPalindrome(string s) {
+        int size = s.length();
+        if(size < 2) return s;
+        bool flag = false;
+        for(int i = size/2; i >= 0; --i)
         {
-            for (int i = 0; i < length - l; ++i)
-                if (l == 1)
-                {
-                    if (s[i] == s[i + l])
-                    {
-                        dp[i][1] = true;
-                        if (i == 0) maxL = maxL > 2 ? maxL : 2;
-                    }
+            int k = flag ? i + 1 : i + 2;
+            bool fflag = false;
+            for(int j = i; j >= 0; --j)
+            {
+                if(s[j] != s[k]){
+                    fflag = true;
+                    break;
                 }
-                else
-                {
-                    if (s[i] == s[i + l] && dp[i + 1][l - 2])
-                    {
-                        dp[i][l] = true;
-                        if (i == 0) maxL = max(maxL, l + 1);
-                    }
-                }
+                ++k;
+            }
+            if(!fflag)
+            {
+                int pos = (i << 1) + static_cast<int>(!flag) + 1;
+                string tmp=s.substr(pos + 1);
+                return string(make_move_iterator(tmp.rbegin()), make_move_iterator(tmp.rend())) + s; 
+            }
+            if(!flag)
+            {
+                flag = true;
+                ++i;
+            }
+            else flag = !flag;
         }
-        string tmp = s.substr(maxL);
-        return string(tmp.rbegin(), tmp.rend()) + s;
+        string tmp = s.substr(1);
+        return string(make_move_iterator(tmp.rbegin()), make_move_iterator(tmp.rend())) + s;
     }
 };
 // @lc code=end
