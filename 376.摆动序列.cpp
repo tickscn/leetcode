@@ -45,20 +45,37 @@
  */
 
 // @lc code=start
+#include <bits/stdc++.h>
+using namespace std;
 class Solution {
 public:
     int wiggleMaxLength(vector<int>& nums)
     {
-        if (nums.size() < 2) return nums.size();
-        int up = 1, down = 1;
-        for (int i = 1; i < nums.size(); ++i)
+        size_t size = nums.size();
+        if (size < 2) return size;
+        vector<pair<int, int>> dp(size);
+        // first 最后一次是下降
+        // second 最后一次是上升
+        dp[0].first = dp[0].second = 1;
+        for (size_t i = 1; i < size; ++i)
         {
             if (nums[i] > nums[i - 1])
-                up = down + 1;
+            {
+                dp[i].first  = dp[i - 1].first;  // 不是降
+                dp[i].second = dp[i - 1].first + 1;
+            }
             else if (nums[i] < nums[i - 1])
-                down = up + 1;
+            {
+                dp[i].first  = dp[i - 1].second + 1;
+                dp[i].second = dp[i - 1].second;
+            }
+            else
+            {
+                dp[i].first  = dp[i - 1].first;
+                dp[i].second = dp[i - 1].second;
+            }
         }
-        return max(up, down);
+        return max(dp[size - 1].first, dp[size - 1].second);
     }
 };
 // @lc code=end
