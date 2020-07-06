@@ -9,20 +9,16 @@ class Solution {
 public:
     int countNumbersWithUniqueDigits(int n)
     {
-        switch (n)
+        if (n == 0) return 1;
+        if (n == 1) return 10;
+        int a1 = 1, a2 = 10, res;
+        for (int i = 2; i <= n && i < 10; ++i)
         {
-        case 0: return 1;
-        case 1: return 10;
-        case 2: return 91;
-        case 3: return 739;
-        case 4: return 5275;
-        case 5: return 32491;
-        case 6: return 168571;
-        case 7: return 712891;
-        case 8: return 2345851;
-        case 9: return 5611771;
-        default: return 8877691;
+            res = a2 + (a2 - a1) * (11 - i);
+            a1  = a2;
+            a2  = res;
         }
+        return res;
     }
 };
 // @lc code=end
