@@ -11,15 +11,26 @@ class Solution {
 public:
     vector<int> singleNumber(vector<int>& nums)
     {
-        unordered_set<int> Set;
+        vector<int> res(2, 0);
+        int tmp = 0;
         for (int num : nums)
         {
-            if (Set.count(num))
-                Set.erase(num);
-            else
-                Set.insert(num);
+            tmp ^= num;
         }
-        return vector<int>(Set.begin(), Set.end());
+        int b = 1;
+        while ((tmp & 1) == 0)
+        {
+            tmp >>= 1;
+            b <<= 1;
+        }
+        for (int num : nums)
+        {
+            if (num & b)
+                res[0] ^= num;
+            else
+                res[1] ^= num;
+        }
+        return res;
     }
 };
 // @lc code=end
