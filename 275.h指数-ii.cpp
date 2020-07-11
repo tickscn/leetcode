@@ -9,13 +9,18 @@ class Solution {
 public:
     int hIndex(vector<int>& citations)
     {
-        int i;
+        if (citations.empty()) return 0;
         const int size = citations.size();
-        for (i = 0; i < citations.size(); ++i)
+        int left = 1 - size, right = 0;
+        while (left <= right)
         {
-            if (citations[size - 1 - i] < i + 1) break;
+            int mid = (left + right) / 2;
+            if (citations[size + mid - 1] < 1 - mid)
+                left = mid + 1;
+            else
+                right = mid - 1;
         }
-        return i;
+        return -right;
     }
 };
 // @lc code=end

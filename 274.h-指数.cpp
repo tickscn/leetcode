@@ -11,13 +11,17 @@ class Solution {
 public:
     int hIndex(vector<int>& citations)
     {
-        int i;
         sort(citations.begin(), citations.end(), std::greater<int>());
-        for (i = 0; i < citations.size(); ++i)
+        int left = 0, right = citations.size() - 1;
+        while (left <= right)
         {
-            if (citations[i] < i + 1) break;
+            int mid = left + (right - left) / 2;
+            if (citations[mid] < mid + 1)
+                right = mid - 1;
+            else
+                left = mid + 1;
         }
-        return i;
+        return left;
     }
 };
 // @lc code=end
